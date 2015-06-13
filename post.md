@@ -1,10 +1,16 @@
-##tl;dr
-`__proto__` is an inenumerable property of its owner that points to its owner's prototype's `prototype` property.  
+## Who this post is for.
+This post is for everyone who has been confused with what prototype is.  
 
-You can easily create a function that will recurse through and print out object's prototypal chain all the way from bottom to top.
+Most of the confusion in JavasSript comes from the fact that it overuses the same term to refer to different but somewhat related concept.
+
+For instance, when a person refers to prototype, in JavaScript it could mean numerous things. It could mean Prototype.js which is a javascript library, prototype as a inheritence concept, `prototype` as a name of one of the properties in a function. Maybe what that person really meant to refer to was `__proto__` which links to its prototype's `prototype`.
+
+This post clarifies numerous confusions relating to "prototype", and `__proto__`.
+
+Note colored words in this post are related to variable or attribute names that exists in JavaScript to help distinguish english as a language from JavaScript names which uses english.
 
 ## Main concept.
-```js
+```javascript
 function randomFunc () {
   var msg = 'How can a function have a property?';
   return msg;
@@ -12,7 +18,8 @@ function randomFunc () {
 var x = randomFunc.prototype.constructor  
 // Expected undefined got 'randomFunc'
 ```
-Every function declared in any way will always have a secret(inenumerable) property called `prototype` which is an object with few properties in it, one of it is called `constructor` which contains a pointer to itself (a function). 
+Every function declared in any way will always have a secret(inenumerable) property called `prototype` which is an object with few properties in it, one of it is called `constructor` which contains a pointer to itself (a function). As can be seen in below image, where I simply created a function named myFunction;
+![](https://raw.githubusercontent.com/imskojs/imskojs.github.io/master/constructor.png)
 
 When any kind of object is created in any way (including literal notation), other than with `Object.create`, it is treated as though it is created with a constructor function. This means, when you type `var x = {}` you are really typing `var x = new Object()`.
 
@@ -24,20 +31,30 @@ Because of the fact that `__proto__` is itself an "`Object` object" (an object c
 
 Because of this behavior people say "Everything is an object in JavaScript", which is not true, it's more like "Everything is a pointer in JavaScript" or more specifically "Everything is a pointer that eventually points to some class's `prototype` property" but if you needed to say that people would not understand it anyway so lets stick with "Um hem, Everything is an object in JavaScript"
 
-### What do I have to do to create an object that has array methods but is not an array?
-Don't create it but;
-```language-javascript
+## Examples
+In this section we will look at examples that would help us solidify our understanding of prototype.
+
+
+### Create an object that has array methods but is not an array
+
+```javascript
+// x is an Object object not an array
 var x = Object.create(Array.prototype)
-x[1] = 'apple'
-Array.isArray(x);  // false
-x[1]  // 'apple'
+
+// verify that x is definitely not an array
+Array.isArray(x);  // output: false
+
+// but, x has array mehods like push
+x.push('apple')
+
+// seems to work just like an array
+x[0]  // output: 'apple'
 ```
 "prototype of x object is `Array.prototype`" which means that `__proto__` is linked to `Array.prototype` property.  
 Objects created with above code gets access to `Array.prototype` methods before `Object.prototype` methods eventhough the object is "`Object` object". However all the methods are designed for arrays and not "`Object` objects" which means that most of them will not work on objects without numeric key values. Also adding indexes or keys created in this way will not increase `length` property. So don't create an object that is not an array but has array's prototype methods at the lowest point of prototypal chain.
 
-### Is there a function that prints out all the prototypal chain of an object?
-No, but you can simply create one.
-```language-javascript
+### Create a function that dives up the prototypal chain and print them out.
+```javascript
 // Returns All prototypical chain of an object.
 function protos(obj) {
   var result = [];
@@ -56,13 +73,13 @@ function protos(obj) {
 // Example;
 var x = [];
 var y = protos(x); 
-console.dir(y)   // [Array, Object]
+console.dir(y)   // output: [Array, Object]
 ```
 `protos` function returns all prototypes of an object from bottom to top.
 You should use this in Dev tools like Google Chrome which can extend what is inside each object, otherwise it will always print "Object", "Array", "String", "Number", or "Boolean" it's what is inside these objects that interests us which can be accessed with `console.dir(<someObj>)`
 
 If you are sure that all the objects are created with methods other than `Object.create()`, and that the object's constructor functions `prototype` property is not overwritten (i.e. there is a `constructor` property within it) you can alter the function to access constructor of the object which is more accurate description of its prototype;
-```language-javascript
+```javascript
 // Returns All prototypical chain of an object.
 function protos(obj) {
   var result = [];
