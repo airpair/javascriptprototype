@@ -38,7 +38,7 @@ In this section we will look at examples that would help us solidify our underst
 ### Create an object that has array methods but is not an array
 
 ```javascript
-// x is an Object object not an array
+// x is an Object object, not an array
 var x = Object.create(Array.prototype)
 
 // verify that x is definitely not an array
