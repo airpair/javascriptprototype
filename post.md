@@ -1,7 +1,7 @@
 ## Who this post is for.
 This post is for everyone who has been confused with what prototype is.  
 
-Most of the confusion in JavasSript comes from the fact that it overuses the same term to refer to different but somewhat related concept.
+Most of the confusion in JavasSript comes from the fact that it has tendency to overuse the same term to refer to different but somewhat related concept.
 
 For instance, when a person refers to prototype, in JavaScript it could mean numerous things. It could mean Prototype.js which is a javascript library, prototype as a inheritence concept, `prototype` as a name of one of the properties in a function. Maybe what that person really meant to refer to was `__proto__` which links to its prototype's `prototype`.
 
@@ -97,4 +97,13 @@ function protos(obj) {
 }
 
 ```
-Note that Object.prototype has a `__proto__` value of `null` otherwise we will recurse infinitely with `protos` function.
+Note that `Object.prototype` has a `__proto__` value of `null` otherwise we will recurse infinitely with `protos` function.
+
+
+## Conclusion
+Most JavaScript framework takes advantage of prototypal behaviour. Hence It is important to understand this behaviour.
+
+Hopefully this post clarifies the difference between prototype, `__proto__`, and `prototype`.
+
+  
+
