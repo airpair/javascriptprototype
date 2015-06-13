@@ -103,7 +103,7 @@ Note that `Object.prototype` has a `__proto__` value of `null` otherwise we will
 ## Conclusion
 Most JavaScript framework takes advantage of prototypal behaviour. Hence It is important to understand this behaviour.
 
-Hopefully this post clarifies the difference between prototype, `__proto__`, and `prototype`.
+Hopefully this post has clarified the difference between prototype, `__proto__`, and `prototype`.
 
   
 
